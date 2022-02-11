@@ -98,7 +98,7 @@ return [
 - 阿里云 OSS 适配器
 
 ```
-composer require qifen/filesystem-oss
+composer require qifen/flysystem-oss
 ```
 - S3 适配器
 
