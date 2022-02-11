@@ -1,7 +1,7 @@
 # 安装
 
 ```
-composer require qifen/webman-filesystem
+composer require qifen/filesystem
 ```
 
 请修改config/plugin/qifen/filesystem 下的配置文件
