@@ -1,20 +1,22 @@
 {
   "name": "qifen/filesystem",
+  "description": "Flysystem V2 adapter for the webman",
+  "keywords": ["webman", "filesystem", "oss","cos","qiniu"],
   "type": "library",
-  "homepage": "https://github.com/xsxs89757/filesystem",
-  "license": "MIT",
   "require": {
-    "workerman/webman-framework": "^1.2.1"
+    "php": ">=7.2",
+    "league/flysystem": "^2.3"
   },
+  "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Qifen\\Filesystem\\": "src"
+      "Qifen\\Filesystem\\": "src/"
     }
   },
   "authors": [
     {
       "name": "lei.wang",
-      "email": "31748423@qq.com"
+      "email": "317448423@qq.com"
     }
   ]
 }
