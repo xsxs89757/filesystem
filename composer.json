@@ -1,0 +1,20 @@
+{
+  "name": "qifen/filesystem",
+  "type": "library",
+  "homepage": "https://github.com/xsxs89757/filesystem",
+  "license": "MIT",
+  "require": {
+    "workerman/webman-framework": "^1.2.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Qifen\\Filesystem\\": "src"
+    }
+  },
+  "authors": [
+    {
+      "name": "lei.wang",
+      "email": "31748423@qq.com"
+    }
+  ]
+}
