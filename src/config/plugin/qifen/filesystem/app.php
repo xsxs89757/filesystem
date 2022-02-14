@@ -9,7 +9,7 @@ return [
         ],
         'ftp' => [
             'driver' => \Qifen\Filesystem\Adapter\FtpAdapterFactory::class,
-            'host' => 'ftp.example.com',
+            'host' => 'ftp.xxx.com',
             'username' => 'username',
             'password' => 'password',
             // 'port' => 21,
