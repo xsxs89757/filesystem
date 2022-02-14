@@ -1,11 +1,10 @@
 <?php
 return [
-    'enable' => true,
     'default' => 'local',
     'storage' => [
         'local' => [
             'driver' => \Qifen\Filesystem\Adapter\LocalAdapterFactory::class,
-            'root' => runtime_path(),
+            'root' => public_path(),
         ],
         'ftp' => [
             'driver' => \Qifen\Filesystem\Adapter\FtpAdapterFactory::class,

@@ -24,12 +24,12 @@ class FilesystemFactory
     }
     public static function get($adapterName): Filesystem
     {
-        $options = \config('plugin.qifen.filesystem', [
+        $options = \config('plugin.qifen.filesystem.app', [
             'default' => 'local',
             'storage' => [
                 'local' => [
                     'driver' => LocalAdapterFactory::class,
-                    'root' => \runtime_path(),
+                    'root' => \public_path(),
                 ],
             ],
         ]);
