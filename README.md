@@ -6,7 +6,7 @@ composer require qifen/filesystem
 
 请修改config/plugin/qifen/filesystem 下的配置文件
 
-```
+```php
 return [
     'default' => 'local',
     'storage' => [
@@ -124,7 +124,7 @@ composer require "overtrue/flysystem-cos:^4.0"
 # 使用
 通过FilesystemFactory::get('local') 来调用不同的适配器
 
-```
+```php
     use Qifen\Filesystem\FilesystemFactory;
     public function upload(Request $request)
     {
@@ -136,7 +136,9 @@ composer require "overtrue/flysystem-cos:^4.0"
             'uploads/'.$file-getUploadName(),
             $stream
         );
-        fclose($stream);
+        if (is_resource($stream)) {
+            @fclose($stream);
+        }
         
         // Write Files
         $filesystem->write('path/to/file.txt', 'contents');
