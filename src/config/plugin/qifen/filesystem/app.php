@@ -2,10 +2,14 @@
 return [
     'enable'   => true,
     'default' => 'local',
+    'max_size' => 1024 * 1024 * 10, //单个文件大小10M
+    'ext_yes' => [], //允许上传文件类型 为空则为允许所有
+    'ext_no' => [], // 不允许上传文件类型 为空则不限制
     'storage' => [
         'local' => [
             'driver' => \Qifen\Filesystem\Adapter\LocalAdapterFactory::class,
             'root' => public_path(),
+            'url' => '//127.0.0.1:8787'
         ],
         'ftp' => [
             'driver' => \Qifen\Filesystem\Adapter\FtpAdapterFactory::class,
