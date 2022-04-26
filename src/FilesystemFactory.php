@@ -19,7 +19,7 @@ class FilesystemFactory {
     public static function instance() {
         return static::$_instance;
     }
-    public static function get( $adapterName ): Filesystem {
+    public static function get( $adapterName, array $adapterOptions = [] ): Filesystem {
         $options = \config( 'plugin.qifen.filesystem.app', [
             'default' => 'local',
             'storage' => [
@@ -31,7 +31,7 @@ class FilesystemFactory {
         ] );
         $adapter = static::getAdapter( $options, $adapterName );
 
-        return new Filesystem( $adapter, $options[ 'storage' ][ $adapterName ] ?? [] );
+        return new Filesystem( $adapter, empty( $adapterOptions ) ? ( $options[ 'storage' ][ $adapterName ] ?? [] ):$adapterOptions );
     }
 
     public static function getAdapter( $options, $adapterName ) {

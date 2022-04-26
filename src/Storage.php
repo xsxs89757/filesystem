@@ -6,6 +6,7 @@ use Closure;
 
 class Storage {
     protected $adapterType = '';
+    protected $adapterOptions = [];
     protected $path = 'storage';
     protected $size = 1024 * 1024 * 10;
     protected $extYes = [];
@@ -53,8 +54,9 @@ class Storage {
     * @return $this
     */
 
-    public function adapter( string $name ) {
+    public function adapter( string $name, array $adapterOptions = [] ) {
         $this->adapterType = $name;
+        $this->adapterOptions = $adapterOptions;
         return $this;
     }
 
@@ -119,7 +121,7 @@ class Storage {
         if ( $file->getSize() > $this->size ) {
             throw new \Exception( "上传文件过大（当前大小 {$file->getSize()}，需小于 {$this->size})" );
         }
-        $filesystem = FilesystemFactory::get( $this->adapterType );
+        $filesystem = FilesystemFactory::get( $this->adapterType, $this->adapterOptions );
         $storageKey = \hash_file( 'md5', $file->getPathname() );
         $fileName = $this->path.'/'.$storageKey.'.'.$file->getUploadExtension();
 
@@ -179,7 +181,7 @@ class Storage {
             if ( $file->getSize() > $this->size ) {
                 throw new \Exception( "上传文件过大（当前大小 {$file->getSize()}，需小于 {$this->size})" );
             }
-            $filesystem = FilesystemFactory::get( $this->adapterType );
+            $filesystem = FilesystemFactory::get( $this->adapterType, $this->adapterOptions );
             $storageKey = \hash_file( 'md5', $file->getPathname() );
             $fileName = $this->path.'/'.$storageKey.'.'.$file->getUploadExtension();
 
