@@ -29,18 +29,18 @@ class FilesystemFactory {
                 ],
             ],
         ] );
-        $adapter = static::getAdapter( $options, $adapterName );
+        $adapter = static::getAdapter( $options, $adapterName, $adapterOptions );
 
         return new Filesystem( $adapter, empty( $adapterOptions ) ? ( $options[ 'storage' ][ $adapterName ] ?? [] ):$adapterOptions );
     }
 
-    public static function getAdapter( $options, $adapterName ) {
+    public static function getAdapter( $options, $adapterName, array $adapterOptions = [] ) {
         if ( ! $options[ 'storage' ] || ! $options[ 'storage' ][ $adapterName ] ) {
             throw new \Exception( "file configurations are missing {$adapterName} options" );
         }
         /** @var AdapterFactoryInterface $driver */
         $driver = Container::get( $options[ 'storage' ][ $adapterName ][ 'driver' ] );
-        return $driver->make( $options[ 'storage' ][ $adapterName ] );
+        return $driver->make( empty( $adapterOptions ) ? $options[ 'storage' ][ $adapterName ] :  $adapterOptions );
     }
     /**
     * @param $name

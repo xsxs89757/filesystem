@@ -8,6 +8,7 @@ class Storage {
     protected $adapterType = '';
     protected $adapterOptions = [];
     protected $path = 'storage';
+    protected $fileName = '';
     protected $size = 1024 * 1024 * 10;
     protected $extYes = [];
     //允许上传文件类型
@@ -72,6 +73,16 @@ class Storage {
     }
 
     /**
+    * 存储地址 全路径的情况
+    * @param string $name
+    */
+
+    public function filePath( string $name ) : Storage {
+        $this->fileName = $name;
+        return $this;
+    }
+
+    /**
     * 允许上传文件类型
     * @param array $ext
     * @return $this
@@ -123,7 +134,7 @@ class Storage {
         }
         $filesystem = FilesystemFactory::get( $this->adapterType, $this->adapterOptions );
         $storageKey = \hash_file( 'md5', $file->getPathname() );
-        $fileName = $this->path.'/'.$storageKey.'.'.$file->getUploadExtension();
+        $fileName = $this->fileName ? $this->fileName : $this->path.'/'.$storageKey.'.'.$file->getUploadExtension();
 
         $stream = \fopen( $file->getRealPath(), 'r+' );
         $filesystem->writeStream(
