@@ -229,7 +229,13 @@ class Storage {
     */
 
     public function url( string $fileName ) {
-        $domain = isset( $this->config[ 'storage' ][ $this->adapterType ][ 'url' ] ) ? $this->config[ 'storage' ][ $this->adapterType ][ 'url' ] : '//'.\request()->host();
+        $domain = '';
+        if ( isset( $this->adapterOptions[ 'url' ] ) ) {
+            $domain = $this->adapterOptions[ 'url' ];
+        } else {
+            $domain = isset( $this->config[ 'storage' ][ $this->adapterType ][ 'url' ] ) ? $this->config[ 'storage' ][ $this->adapterType ][ 'url' ] : '//'.\request()->host();
+        }
+
         return $domain.'/'.$fileName;
     }
 
