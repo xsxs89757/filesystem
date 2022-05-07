@@ -18,9 +18,9 @@ class Storage {
     protected static $_instance = null;
 
     public static function instance() {
-        if ( !static::$_instance ) {
-            static::$_instance = new \Qifen\Filesystem\Storage();
-        }
+        // if ( !static::$_instance ) {
+        static::$_instance = new \Qifen\Filesystem\Storage();
+        // }
         return static::$_instance;
     }
     /**
