@@ -2,6 +2,7 @@
 return [
     'enable'   => true,
     'default' => 'local',
+    'hash_append_rand' => false,
     'max_size' => 1024 * 1024 * 10, //单个文件大小10M
     'ext_yes' => [], //允许上传文件类型 为空则为允许所有
     'ext_no' => [], // 不允许上传文件类型 为空则不限制

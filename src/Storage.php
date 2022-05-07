@@ -32,6 +32,7 @@ class Storage {
         $this->size = $this->config[ 'size' ] ?? 1024 * 1024 * 10;
         $this->extYes = $this->config[ 'ext_yes' ] ?? [];
         $this->extNo = $this->config[ 'ext_no' ] ?? [];
+        $this->hashAppendRand = $this->config[ 'hash_append_rand' ] ?? false;
         if ( !empty( static::$maker ) ) {
             foreach ( static::$maker as $maker ) {
                 \call_user_func( $maker, $this );
@@ -133,7 +134,8 @@ class Storage {
             throw new \Exception( "上传文件过大（当前大小 {$file->getSize()}，需小于 {$this->size})" );
         }
         $filesystem = FilesystemFactory::get( $this->adapterType, $this->adapterOptions );
-        $storageKey = \hash_file( 'md5', $file->getPathname() );
+        $hashFileName = \hash_file( 'md5', $file->getPathname() );
+        $storageKey = $this->hashAppendRand ? $hashFileName. rand( 10000, 99999 ) : $hashFileName;
         $fileName = $this->fileName ? $this->fileName : $this->path.'/'.$storageKey.'.'.$file->getUploadExtension();
 
         $stream = \fopen( $file->getRealPath(), 'r+' );
@@ -193,7 +195,8 @@ class Storage {
                 throw new \Exception( "上传文件过大（当前大小 {$file->getSize()}，需小于 {$this->size})" );
             }
             $filesystem = FilesystemFactory::get( $this->adapterType, $this->adapterOptions );
-            $storageKey = \hash_file( 'md5', $file->getPathname() );
+            $hashFileName = \hash_file( 'md5', $file->getPathname() );
+            $storageKey = $this->hashAppendRand ? $hashFileName. rand( 10000, 99999 ) : $hashFileName;
             $fileName = $this->path.'/'.$storageKey.'.'.$file->getUploadExtension();
 
             $stream = \fopen( $file->getRealPath(), 'r+' );
