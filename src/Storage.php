@@ -178,7 +178,7 @@ class Storage
         if($file->getSize() > $this->size){
             throw new \Exception("上传文件过大（当前大小 {$file->getSize()}，需小于 {$this->size})");
         }
-        $filesystem = FilesystemFactory::get($this->adapterType);
+        $filesystem = FilesystemFactory::get($this->adapterType, $this->adapterOptions);
         $first = strrpos($fileName,'/');
         if($first === false){
             $path = $this->path;
@@ -263,7 +263,7 @@ class Storage
             throw new \Exception('文件类型不被允许'.$size['mime']);
         }
 
-        $filesystem = FilesystemFactory::get($this->adapterType);
+        $filesystem = FilesystemFactory::get($this->adapterType, $this->adapterOptions);
         $storageKey = md5(uniqid());
         $fileName = $this->path.'/'.$storageKey.'.'.$res[2];
         $base_img = str_replace($res[1], '', $baseImg);
