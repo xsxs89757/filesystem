@@ -186,12 +186,19 @@ class Storage
         }else{
             $path = substr($fileName,0,$first);
             $keyAndExt = explode('.',substr($fileName,$first + 1,strlen($fileName)));
+            $this->path = $path;
         }
+        
         $storageKey = $keyAndExt[0] ?? \hash_file('md5', $file->getPathname());
         $fileName = $path.'/'.$storageKey.'.'.($ext?$keyAndExt[1]:$file->getUploadExtension());
-        if($filesystem->fileExists(trim($fileName, '/'))){
-            $filesystem->delete($fileName);
+        try{
+            if($filesystem->fileExists(trim($fileName, '/'))){
+                $filesystem->delete($fileName);
+            }
+        }catch(\Throwable $e){
+
         }
+
         $result = $this->putFileAs($this->path, $file, $storageKey.'.'.($ext?$keyAndExt[1]:$file->getUploadExtension()));
         $info = [
             'origin_name' => $file->getUploadName(),
