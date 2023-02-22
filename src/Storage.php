@@ -30,7 +30,7 @@ class Storage
      */
     public function __construct()
     {
-        $this->config = config('plugin.shopwwi.filesystem.app');
+        $this->config = config('plugin.qifen.filesystem.app');
         $this->adapterType = $this->config['default'] ?? 'local';
         $this->size = $this->config['max_size'] ?? 1024 * 1024 * 10;
         $this->extYes = $this->config['ext_yes'] ?? [];
