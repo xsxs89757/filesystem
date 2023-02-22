@@ -206,6 +206,24 @@ composer require "overtrue/flysystem-cos:^4.0"
             $e->getMessage();
          }
 
+          // 指定文件名上传(同文件将被覆盖)
+        try {
+            $files = $request->file();
+            $fileName = 'storage/upload/user/1.png'; // 文件名中如此带了路径 则下面的path无效 未带路径1.png效果相等
+            $ext = true; // 文件尾缀是否替换 开启后则$files上传的任意图片 都会转换为$fileName尾缀（示例: .png），默认false
+            $result = Storage::adapter('public')->path('storage/upload/user')->size(1024*1024*5)->extYes(['image/jpeg','image/gif'])->extNo(['image/png'])->reUpload($file,$fileName,$ext);
+         }catch (\Exception $e){
+            $e->getMessage();
+         }
+         
+        // base64图片上传
+        try {
+            $files = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCCAYAAAB8GMlFAAAAAXNSR0IArs4c6QAAAARnQU1BAACx...";
+            $result = Storage::adapter('public')->path('storage/upload/user')->size(1024*1024*5)->extYes(['image/jpeg','image/gif'])->extNo(['image/png'])->base64Upload($files);
+         }catch (\Exception $e){
+            $e->getMessage();
+         }
+
          //获取文件外网
          $filesName = 'storage/a4bab140776e0c1d57cc316266e1ca05.png';
          $fileUrl = Storage::url($filesName);
