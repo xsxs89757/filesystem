@@ -15,6 +15,7 @@ class Storage {
     protected $extNo = [];
     // 不允许上传文件类型
     protected $config = [];
+    protected $hashAppendRand = null;
 
     /**
     * @var Closure[]
