@@ -13,6 +13,7 @@ use Webman\Http\UploadFile;
 class Storage
 {
     protected $adapterType = '';
+    protected $adapterOptions = [];
     protected $path = 'storage';
     protected $size = 1024 * 1024 * 10;
     protected $extYes = []; //允许上传文件类型
@@ -58,9 +59,10 @@ class Storage
      * @param string $name
      * @return $this
      */
-    public function adapter(string $name)
+    public function adapter(string $name, array $adapterOptions = [])
     {
         $this->adapterType = $name;
+        $this->adapterOptions = $adapterOptions;
         return $this;
     }
 
@@ -125,7 +127,7 @@ class Storage
         if($file->getSize() > $this->size){
             throw new \Exception("上传文件过大（当前大小 {$file->getSize()}，需小于 {$this->size})");
         }
-        $filesystem = FilesystemFactory::get($this->adapterType);
+        $filesystem = FilesystemFactory::get($this->adapterType, $this->adapterOptions);
         $storageKey = $this->hash($file->getPathname());
         if($same){
             $storageKey = $this->hash($file->getPathname()).'_'.uniqid();
@@ -299,10 +301,13 @@ class Storage
      */
     public function url(string $fileName)
     {
-        $domain = $this->config['storage'][$this->adapterType]['url'];
-        if(empty($this->config['storage'][$this->adapterType]['url'])){
-            $domain = '//'.\request()->host();
+        $domain = '';
+        if ( isset( $this->adapterOptions[ 'url' ] ) ) {
+            $domain = $this->adapterOptions[ 'url' ];
+        } else {
+            $domain = isset( $this->config[ 'storage' ][ $this->adapterType ][ 'url' ] ) ? $this->config[ 'storage' ][ $this->adapterType ][ 'url' ] : '//'.\request()->host();
         }
+
         return $domain.'/'.$fileName;
     }
 
@@ -383,7 +388,6 @@ class Storage
         $options = is_string($options)
             ? ['visibility' => $options]
             : (array) $options;
-
         // If the given contents is actually a file or uploaded file instance than we will
         // automatically store the file using a stream. This provides a convenient path
         // for the developer to store streams without managing them manually in code.
@@ -394,12 +398,12 @@ class Storage
 
         try {
             if ($contents instanceof StreamInterface) {
-                FilesystemFactory::get($this->adapterType)->writeStream($path, $contents->detach(), $options);
+                FilesystemFactory::get($this->adapterType, $this->adapterOptions)->writeStream($path, $contents->detach(), $options);
                 return true;
             }
             is_resource($contents)
-                ? FilesystemFactory::get($this->adapterType)->writeStream($path, $contents, $options)
-                : FilesystemFactory::get($this->adapterType)->write($path, $contents, $options);
+                ? FilesystemFactory::get($this->adapterType, $this->adapterOptions)->writeStream($path, $contents, $options)
+                : FilesystemFactory::get($this->adapterType, $this->adapterOptions)->write($path, $contents, $options);
         } catch (UnableToWriteFile | UnableToSetVisibility $e) {
             throw_if($this->throwsExceptions(), $e);
 
